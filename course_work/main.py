@@ -80,6 +80,37 @@ def kruskal(graph):
     return min_spanning_tree
 
 
+def adjacency_list(letters, graph):
+    adj_list = {}
+    for i in range(len(letters)):
+        lst = []
+        for el in graph.get_edges():
+            if i == el[0]:
+                lst.append((letters[el[1]], el[2]))
+                adj_list[letters[i]] = lst
+    return adj_list
+
+
+def list_of_edges(letters, graph):
+    list_of_edges = []
+    for i in graph.get_edges():
+        list_of_edges.append((letters[i[0]], letters[i[1]], i[2]))
+    return list_of_edges
+
+
+def incidence_matrix(letters, graph):
+    incidence_matrix = {}
+    for el in graph.get_edges():
+        lst = []
+        for i in range(len(letters)):
+            if i == el[1]:
+                lst.append(el[2])
+            else:
+                lst.append(0)
+        incidence_matrix[(letters[el[0]], letters[el[1]])] = lst
+    return incidence_matrix
+
+
 def output_graph(letters, graph):
     # вывод списка ребер
     print("Список ребер:", sep="\n")
@@ -133,8 +164,15 @@ def read_graph_from_file(filename):
 print('Введите имя файла: ')
 filename = input()
 letters, graph = read_graph_from_file(filename)
-output_graph(letters, graph)  # вывод матрицы инцидентности, списка смежности и списка ребер
 
+print("Списки смежности:", sep="\n")
+print(adjacency_list(letters, graph))
+print("Список ребер:", sep="\n")
+print(*list_of_edges(letters, graph), sep="\n")
+print("Матрица инцидентности:", sep="\n")
+for i in incidence_matrix(letters, graph):
+    print(i, end=" ")
+    print(incidence_matrix(letters, graph)[i], sep="\n")
 min_tree = kruskal(graph.get_edges())
 
 print("Конечный ответ")
